@@ -1,1 +1,278 @@
-Hello World
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Labirent Oyunu</title>
+  <style>
+    body {
+      background-color: #121212;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    h2 {
+      text-align: center;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    canvas {
+      background-color: #222;
+      border: 2px solid #fff;
+    }
+
+    #directionUI {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #ui-up {
+      width: 64px;
+      height: 64px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    
+    #ui-middle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    #ui-left, #ui-right {
+      width: 64px;
+      height: 64px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    #ui-center {
+      width: 64px;
+      height: 64px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Ana Menü -->
+<div id="mainMenu" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+  <h1 style="color: white;">Yön Toplayan Labirent</h1>
+  <button onclick="startGame()" style="padding: 15px 30px; font-size: 18px; cursor: pointer;">Oyuna Başla</button>
+</div>
+
+<!-- Oyun Alanı -->
+<div id="gameArea" style="display: none; flex-direction: column; align-items: center;">
+  <h2 id="levelInfo">Level: 1 / 5</h2>
+  <canvas id="gameCanvas" width="512" height="512"></canvas>
+
+  <div id="directionUI">
+    <div id="ui-up"></div>
+    <div id="ui-middle">
+      <div id="ui-left"></div>
+      <div id="ui-center"></div>
+      <div id="ui-right"></div>
+    </div>
+    <div id="ui-down"></div>
+  </div>
+</div>
+
+<h2 id="levelInfo">Level: 1 / 5</h2>
+<canvas id="gameCanvas" width="512" height="512"></canvas>
+
+<div id="directionUI">
+  <div id="ui-up"></div>
+  <div id="ui-middle">
+    <div id="ui-left"></div>
+    <div id="ui-center"></div>
+    <div id="ui-right"></div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const tileSize = 64;
+
+const tiles = {
+  0: "tahta.png",
+  1: "siyah_piyon.png",
+  2: "kale.png",
+  3: "sah.png"
+};
+
+const directionsMap = {
+  "←": "ok_sol.png",
+  "→": "ok_sag.png",
+  "↑": "ok_yukari.png",
+  "↓": "ok_asagi.png"
+};
+
+const uiAssets = {
+  base: "KeyboardButtons_Base.png",
+  "←": "KeyboardButtonsDir_left.png",
+  "→": "KeyboardButtonsDir_right.png",
+  "↑": "KeyboardButtonsDir_up.png",
+  "↓": "KeyboardButtonsDir_down.png"
+};
+
+let currentLevel = 0;
+let map = [];
+let player = { x: 0, y: 0, directions: [] };
+let upgrades = [];
+
+const levels = [
+  {
+    map: [
+      [0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 2, 1, 0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 1, 3, 1, 0],
+      [1, 1, 1, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 1, 1, 1, 0],
+      [0, 1, 1, 1, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0]
+    ],
+    player: { x: 6, y: 3, directions: ["↑", "←"] },
+    upgrades: [
+      { x: 5, y: 3, dir: "→" },
+      { x: 4, y: 4, dir: "↓" }
+    ]
+  },
+  // 4 ekstra level burada devam edecek...
+    {
+    map: [
+      [0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 2, 1, 0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 1, 3, 1, 0],
+      [1, 1, 1, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 1, 1, 1, 0],
+      [0, 1, 1, 1, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0]
+    ],
+    player: { x: 6, y: 3, directions: ["↑", "←"] },
+    upgrades: [
+      { x: 2, y: 0, dir: "→" },
+      { x: 4, y: 4, dir: "↓" }
+    ]
+  },
+];
+
+function loadImage(src) {
+  const img = new Image();
+  img.src = src;
+  return img;
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const boardImg = loadImage("tahta.png");
+  ctx.drawImage(boardImg, 0, 0, canvas.width, canvas.height);
+
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++) {
+      let tile = map[y][x];
+      if (tile === 1) {
+        const wallImg = loadImage(tiles[1]);
+        ctx.drawImage(wallImg, x * tileSize, y * tileSize, tileSize, tileSize);
+      } else if (tile === 3) {
+        const goalImg = loadImage(tiles[3]);
+        ctx.drawImage(goalImg, x * tileSize, y * tileSize, tileSize, tileSize);
+      }
+    }
+  }
+
+  for (let u of upgrades) {
+    const upImg = loadImage(directionsMap[u.dir]);
+    ctx.drawImage(upImg, u.x * tileSize, u.y * tileSize, tileSize, tileSize);
+  }
+
+  const playerImg = loadImage(tiles[2]);
+  ctx.drawImage(playerImg, player.x * tileSize, player.y * tileSize, tileSize, tileSize);
+}
+
+function updateDirectionUI() {
+  const dirs = player.directions;
+  const allDirs = ["←", "→", "↑", "↓"];
+
+  const uiUp = document.getElementById("ui-up");
+  const uiLeft = document.getElementById("ui-left");
+  const uiRight = document.getElementById("ui-right");
+
+  uiUp.style.backgroundImage = `url('${dirs.includes("↑") ? uiAssets["↑"] : uiAssets.base}')`;
+  uiLeft.style.backgroundImage = `url('${dirs.includes("←") ? uiAssets["←"] : uiAssets.base}')`;
+  uiRight.style.backgroundImage = `url('${dirs.includes("→") ? uiAssets["→"] : uiAssets.base}')`;
+}
+
+function resetLevel() {
+  const level = levels[currentLevel];
+  map = JSON.parse(JSON.stringify(level.map));
+  player = { ...level.player };
+  upgrades = level.upgrades.map(u => ({ ...u }));
+
+  document.getElementById("levelInfo").innerText = `Level: ${currentLevel + 1} / ${levels.length}`;
+
+  draw();
+  updateDirectionUI();
+}
+
+function nextLevel() {
+  currentLevel++;
+  if (currentLevel >= levels.length) {
+    alert("Tüm seviyeleri tamamladınız!");
+    currentLevel = 0;
+  }
+  resetLevel();
+}
+
+window.addEventListener("keydown", (e) => {
+  const { x, y } = player;
+  let newX = x;
+  let newY = y;
+
+  if (e.key === "r" || e.key === "R") {
+    resetLevel();
+    return;
+  }
+
+  if (e.key === "ArrowLeft" && player.directions.includes("←")) newX--;
+  if (e.key === "ArrowRight" && player.directions.includes("→")) newX++;
+  if (e.key === "ArrowUp" && player.directions.includes("↑")) newY--;
+  if (e.key === "ArrowDown" && player.directions.includes("↓")) newY++;
+
+  if (newX < 0 || newX >= 8 || newY < 0 || newY >= 8) return;
+  if (map[newY][newX] === 1) return;
+
+  player.x = newX;
+  player.y = newY;
+
+  for (let i = 0; i < upgrades.length; i++) {
+    const u = upgrades[i];
+    if (u.x === newX && u.y === newY) {
+      player.directions = [u.dir, player.directions[0]];
+      upgrades.splice(i, 1);
+      break;
+    }
+  }
+
+  if (map[newY][newX] === 3) {
+    map[newY][newX] = 0;
+    setTimeout(() => nextLevel(), 500);
+  }
+
+  draw();
+  updateDirectionUI();
+});
+
+resetLevel();
+</script>
+
+</body>
+</html>
