@@ -19,7 +19,7 @@ Fikir babası oyunun ismi Tring'tir ve oyunun linki verilmiştir.
 
 ## 🖼️ Oynanış Videosu
 
-https://www.youtube.com/watch?v=sClSH4_TWrs
+https://www.youtube.com/watch?v=dJemmebMqrM
 
 ---
 
