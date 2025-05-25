@@ -196,7 +196,7 @@
           <strong>Oyun Mekanikleri</strong>:
           <ul>
             <li><strong>Yönler</strong>: Her seviyede başlangıçta belirli yönlerde hareket edebilirsiniz (örneğin, sadece yukarı ve sola). Aktif yönler, ekranın altındaki yön göstergesinde görünür.</li>
-            <li><strong>Yükseltmeler</strong>: Tahtadaki ok simgeleri, hareket yönlerinizi değiştirir. Bir yükseltme aldığınızda, son kullandığınız yön yeni bir yönle değişir.</li>
+            <li><strong>Yükseltmeler</strong>: Tahtadaki ok simgeleri, hareket yönlerinizi değiştirir. Bir yükseltme aldığınızda, son kullandığınız yönü kaybedersiniz.</li>
             <li><strong>Engeller</strong>: Siyah piyonlar duvarları temsil eder; bu alanlara hareket edemezsiniz.</li>
           </ul>
         </li>
@@ -264,9 +264,9 @@
     // Oyun seviyeleri: Harita, oyuncu başlangıç noktası, yönler ve yükseltmeler
     const levels = [
       {
-        map: [ // Seviye 1 haritası (0: boş, 1: duvar, 2: oyuncu, 3: hedef)
+        map: [ // Seviye 1 haritası (0: boş, 1: duvar, 3: hedef)
           [0, 0, 1, 0, 0, 0, 0, 0],
-          [0, 2, 1, 0, 1, 1, 1, 0],
+          [0, 0, 1, 0, 1, 1, 1, 0],
           [0, 0, 0, 0, 1, 3, 1, 0],
           [1, 1, 1, 0, 1, 0, 0, 0],
           [0, 0, 0, 0, 1, 1, 1, 0],
@@ -274,78 +274,89 @@
           [0, 0, 0, 0, 0, 0, 1, 0],
           [0, 0, 0, 0, 0, 0, 1, 0]
         ],
-        player: { x: 6, y: 3, directions: ["↑", "←"] }, // Oyuncu başlangıç: (6,3), yönler: yukarı, sol
-        upgrades: [ // Yükseltmeler: Konum ve yeni yön
-          { x: 5, y: 3, dir: "→" },
-          { x: 4, y: 4, dir: "↓" }
+        player: { x: 0, y: 0, directions: ["↓", "→"] }, // Oyuncu başlangıç: (6,3), yönler: yukarı, sol
+        upgrades: [ // Yükseltmeler: Konum ve yeni yön 
+          { x: 3, y: 3, dir: "↑" },
+          { x: 7, y: 0, dir: "↓" },
+          { x: 7, y: 3, dir: "←" }
         ]
       },
       {
         map: [ // Seviye 2 haritası
           [0, 0, 0, 0, 1, 0, 0, 0],
-          [0, 2, 1, 0, 1, 1, 0, 0],
+          [0, 0, 0, 0, 0, 1, 0, 0],
           [0, 0, 0, 0, 1, 0, 0, 0],
           [1, 1, 1, 0, 1, 3, 1, 0],
           [0, 0, 0, 0, 1, 0, 0, 0],
           [0, 1, 1, 1, 1, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0]
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0]
         ],
         player: { x: 1, y: 1, directions: ["↓", "→"] }, // Oyuncu başlangıç: (1,1), yönler: aşağı, sağ
         upgrades: [
-          { x: 3, y: 2, dir: "→" },
-          { x: 2, y: 4, dir: "↓" }
+          { x: 4, y: 1, dir: "←" },
+          { x: 0, y: 6, dir: "→" },
+          { x: 4, y: 6, dir: "↓" },
+          { x: 3, y: 7, dir: "↑" },
+          { x: 4, y: 7, dir: "→" }
         ]
       },
       {
-        map: [ // Seviye 3 haritası
+        map: [ // Seviye 3 haritası   
           [0, 0, 0, 1, 0, 0, 0, 0],
-          [0, 2, 1, 1, 0, 1, 1, 0],
-          [0, 0, 0, 0, 0, 0, 3, 0],
+          [0, 0, 1, 1, 0, 1, 1, 0],
+          [0, 0, 0, 0, 0, 1, 3, 0],
           [1, 1, 1, 0, 1, 1, 0, 0],
           [0, 0, 0, 0, 1, 0, 0, 0],
           [0, 1, 1, 1, 1, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0]
-        ],
-        player: { x: 1, y: 1, directions: ["↑", "→"] }, // Oyuncu başlangıç: (1,1), yönler: yukarı, sağ
-        upgrades: [
-          { x: 4, y: 2, dir: "↓" },
-          { x: 5, y: 4, dir: "→" }
-        ]
-      },
-      {
-        map: [ // Seviye 4 haritası
-          [0, 0, 1, 0, 0, 0, 0, 0],
-          [0, 2, 1, 0, 1, 1, 1, 0],
           [0, 0, 0, 0, 0, 0, 0, 0],
-          [1, 1, 1, 0, 1, 3, 1, 0],
-          [0, 0, 0, 0, 1, 0, 0, 0],
-          [0, 1, 1, 1, 1, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0],
           [0, 0, 0, 0, 0, 0, 1, 0]
         ],
-        player: { x: 1, y: 1, directions: ["↓", "←"] }, // Oyuncu başlangıç: (1,1), yönler: aşağı, sol
+        player: { x: 1, y: 1, directions: ["↓", "→"] }, // Oyuncu başlangıç: (1,1), yönler: yukarı, sağ
         upgrades: [
-          { x: 2, y: 3, dir: "→" },
-          { x: 3, y: 4, dir: "↓" }
+          { x: 3, y: 4, dir: "↑" },
+          { x: 7, y: 0, dir: "↓" },
+          { x: 7, y: 6, dir: "←" }
         ]
       },
       {
-        map: [ // Seviye 5 haritası
+        map: [ // Seviye 4 haritası   
+          [0, 0, 1, 0, 0, 0, 0, 0],
+          [0, 0, 1, 0, 1, 1, 1, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [1, 0, 0, 0, 0, 0, 1, 0],
           [0, 0, 0, 0, 1, 0, 0, 0],
-          [0, 2, 1, 0, 1, 1, 0, 0],
-          [0, 0, 0, 0, 0, 0, 3, 0],
-          [1, 1, 1, 0, 1, 0, 0, 0],
-          [0, 0, 0, 0, 1, 1, 1, 0],
-          [0, 1, 1, 1, 1, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 1, 0],
-          [0, 0, 0, 0, 0, 0, 1, 0]
+          [0, 1, 1, 0, 0, 0, 1, 0],
+          [0, 0, 3, 0, 0, 0, 1, 0]
         ],
-        player: { x: 1, y: 1, directions: ["↑", "↓"] }, // Oyuncu başlangıç: (1,1), yönler: yukarı, aşağı
+        player: { x: 5, y: 5, directions: ["↑", "←"] }, // Oyuncu başlangıç: (1,1), yönler: aşağı, sol
         upgrades: [
-          { x: 5, y: 2, dir: "→" },
-          { x: 4, y: 3, dir: "↓" }
+          { x: 1, y: 5, dir: "→" },
+          { x: 2, y: 3, dir: "↓" },
+          { x: 7, y: 4, dir: "↑" },
+          { x: 7, y: 0, dir: "←" }
+        ]
+      },
+      {
+        map: [ // Seviye 5 haritası   ← → ↑ ↓
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0, 0],
+          [0, 0, 0, 1, 1, 1, 0, 0],
+          [0, 0, 0, 0, 3, 1, 0, 1],
+          [0, 0, 0, 1, 1, 1, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0]
+        ],
+        player: { x: 7, y: 7, directions: ["↑", "←"] }, // Oyuncu başlangıç: (1,1), yönler: yukarı, aşağı
+        upgrades: [
+          { x: 5, y: 0, dir: "↓" },
+          { x: 4, y: 1, dir: "→" },
+          { x: 7, y: 4, dir: "←" },
+          { x: 1, y: 7, dir: "↑" },
+          { x: 0, y: 2, dir: "→" },
+          { x: 2, y: 0, dir: "↓" }
         ]
       }
     ];
