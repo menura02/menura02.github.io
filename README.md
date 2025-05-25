@@ -5,6 +5,12 @@
 **Labirent Oyunu**, HTML5 ve JavaScript ile geliştirilmiş, zekanızı ve stratejik düşünme becerilerinizi test eden bir bulmaca oyunudur.  
 Hareket yönlerinizi değiştiren yükseltmeleri toplayın ve her seviyeyi tamamlamak için şaha ulaşın.
 
+
+## Fikir Babası Oyun
+
+Fikir babası oyunun ismi Tring'tir ve oyunun linki verilmiştir.
+🔗 **[https://itsmegumshoes.itch.io/tring/](https://itsmegumshoes.itch.io/tring)**
+
 ---
 
 ## 🖼️ Oyun Ekran Görüntüsü
