@@ -1,7 +1,7 @@
 
 
 
-                                COPYRIGHTS
+                                      COPYRIGHTS
 
 Keyboard Direction Buttons:		https://opengameart.org/content/keyboard-direction-buttons
 
