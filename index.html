@@ -80,7 +80,7 @@
       background-color: #45a049;
     }
 
-    /* Seviye tamamlama, oyun sonu ve tutorial ekranları: Ortada, yarı saydam arka plan */
+    /* Seviye tamamlama, oyun sonu ve tutorial ekranları */
     #gameOverScreen, #gameCompleteScreen, #tutorialScreen {
       position: absolute;
       top: 50%;
@@ -97,7 +97,7 @@
       overflow-y: auto;
     }
 
-    /* Ekranlardaki butonlar: Ana menü butonlarıyla uyumlu */
+    /* Ekranlardaki butonlar */
     #gameOverScreen button, #gameCompleteScreen button, #tutorialScreen button {
       margin: 10px;
       padding: 10px 20px;
@@ -125,18 +125,18 @@
       padding: 30px 20px;
     }
 
-    /* Tutorial ekranı başlığı: Ortalanmış */
+    /* Tutorial ekranı başlığı */
     #tutorialScreen h2 {
       text-align: center;
     }
 
-    /* Tutorial ekranı listeleri: Sol iç boşluk */
+    /* Tutorial ekranı listeleri */
     #tutorialScreen ul {
       margin: 10px 0;
       padding-left: 20px;
     }
 
-    /* Tutorial ekranı paragrafları: Üst/alt boşluk */
+    /* Tutorial ekranı paragrafları */
     #tutorialScreen p {
       margin: 10px 0;
     }
@@ -151,28 +151,28 @@
       <button style="margin-top: 50px;" onclick="startLevel(0)">Oyuna Başla</button>
       <button onclick="showTutorial()">Tutorial</button>
     </div>
-    <!-- Seviye sayacı: Mevcut seviye numarasını gösterir -->
+    <!-- Seviye sayacı -->
     <div id="levelCounter">Seviye 1</div>
-    <!-- Oyun tahtası: 512x512 piksel canvas -->
+    <!-- 512x512 piksel canvas -->
     <canvas id="gameCanvas" width="512" height="512" style="display: none;"></canvas>
-    <!-- Yön UI: Yön tuşları ve yeniden başlatma metni -->
+    <!-- Yön tuşları ve yeniden başlatma metni -->
     <div id="directionUI" style="display: none;">
       <div id="ui-up"></div>
       <div id="ui-middle"></div>
       <div id="restartText">Yeniden Başlamak İçin R’ye Basın</div>
     </div>
-    <!-- Seviye tamamlama ekranı: Sonraki seviye ve menü butonları -->
+    <!-- Seviye tamamlama ekranı, Sonraki seviye ve menü butonları -->
     <div id="gameOverScreen">
       <h2>Seviye Tamamlandı!</h2>
       <button onclick="returnToMenu()">Ana Menüye Dön</button>
       <button onclick="nextLevel()">Sonraki Seviye</button>
     </div>
-    <!-- Oyun sonu ekranı: Tebrik mesajı ve menü butonu -->
+    <!-- Oyun sonu ekranı -->
     <div id="gameCompleteScreen" style="display: none;">
       <h2>Tebrikler, oyunu bitirdiniz!</h2>
       <button onclick="returnToMenu()">Ana Menüye Dön</button>
     </div>
-    <!-- Tutorial ekranı: Oyun talimatları -->
+    <!-- Tutorial ekranı -->
     <div id="tutorialScreen" style="display: none;">
       <h2>Tutorial</h2>
       <p><strong>Proje 33’e Hoş Geldiniz!</strong></p>
@@ -195,8 +195,8 @@
         <li>
           <strong>Oyun Mekanikleri</strong>:
           <ul>
-            <li><strong>Yönler</strong>: Her seviyede başlangıçta belirli yönlerde hareket edebilirsiniz (örneğin, sadece yukarı ve sola). Aktif yönler, ekranın altındaki yön göstergesinde görünür.</li>
-            <li><strong>Yükseltmeler</strong>: Tahtadaki ok simgeleri, hareket yönlerinizi değiştirir. Bir yükseltme aldığınızda, son kullandığınız yönü kaybedersiniz.</li>
+            <li><strong>Yönler</strong>: Her seviyede başlangıçta <strong style="color: red;">belirli yönlerde hareket edebilirsiniz</strong> (örneğin, sadece yukarı ve sola). Aktif yönler, ekranın altındaki yön göstergesinde görünür.</li>
+            <li style="color: red;"><strong>Yükseltmeler</strong>: Tahtadaki ok simgeleri, hareket yönlerinizi değiştirir. Bir yükseltme aldığınızda, son kullandığınız yönü kaybedersiniz.</li>
             <li><strong>Engeller</strong>: Siyah piyonlar duvarları temsil eder; bu alanlara hareket edemezsiniz.</li>
           </ul>
         </li>
@@ -206,7 +206,7 @@
     </div>
   </div>
 
-  <!-- Ses dosyaları: Menü, seviye, seviye tamamlama ve yükseltme sesleri -->
+  <!-- Ses dosyaları -->
   <audio id="lobbyMusic" loop>
     <source src="assets/audio/lobby.mp3" type="audio/mpeg">
   </audio>
@@ -274,7 +274,7 @@
           [0, 0, 0, 0, 0, 0, 1, 0],
           [0, 0, 0, 0, 0, 0, 1, 0]
         ],
-        player: { x: 0, y: 0, directions: ["↓", "→"] }, // Oyuncu başlangıç: (6,3), yönler: yukarı, sol
+        player: { x: 0, y: 0, directions: ["↓", "→"] }, // Oyuncu başlangıç: (0,0), yönler: aşağı, sağ
         upgrades: [ // Yükseltmeler: Konum ve yeni yön 
           { x: 3, y: 3, dir: "↑" },
           { x: 7, y: 0, dir: "↓" },
@@ -312,7 +312,7 @@
           [0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 1, 0]
         ],
-        player: { x: 1, y: 1, directions: ["↓", "→"] }, // Oyuncu başlangıç: (1,1), yönler: yukarı, sağ
+        player: { x: 1, y: 1, directions: ["↓", "→"] }, // Oyuncu başlangıç: (1,1), yönler: aşağı, sağ
         upgrades: [
           { x: 3, y: 4, dir: "↑" },
           { x: 7, y: 0, dir: "↓" },
@@ -330,7 +330,7 @@
           [0, 1, 1, 0, 0, 0, 1, 0],
           [0, 0, 3, 0, 0, 0, 1, 0]
         ],
-        player: { x: 5, y: 5, directions: ["↑", "←"] }, // Oyuncu başlangıç: (1,1), yönler: aşağı, sol
+        player: { x: 5, y: 5, directions: ["↑", "←"] }, // Oyuncu başlangıç: (5,5), yönler: yukarı, sol
         upgrades: [
           { x: 1, y: 5, dir: "→" },
           { x: 2, y: 3, dir: "↓" },
@@ -339,7 +339,7 @@
         ]
       },
       {
-        map: [ // Seviye 5 haritası   ← → ↑ ↓
+        map: [ // Seviye 5 haritası  
           [0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 1, 0, 0, 0, 0],
           [0, 0, 0, 1, 1, 1, 0, 0],
@@ -349,7 +349,7 @@
           [0, 0, 1, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0]
         ],
-        player: { x: 7, y: 7, directions: ["↑", "←"] }, // Oyuncu başlangıç: (1,1), yönler: yukarı, aşağı
+        player: { x: 7, y: 7, directions: ["↑", "←"] }, // Oyuncu başlangıç: (7,7), yönler: yukarı, sol
         upgrades: [
           { x: 5, y: 0, dir: "↓" },
           { x: 4, y: 1, dir: "→" },
