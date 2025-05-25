@@ -11,6 +11,9 @@ Hareket yönlerinizi değiştiren yükseltmeleri toplayın ve her seviyeyi tamam
 
 ![Seviye1](https://github.com/user-attachments/assets/f891a854-9bc9-453f-b3e2-d8d0d33e8114)
 
+## 🖼️ Oynanış Videosu
+
+https://www.youtube.com/watch?v=sClSH4_TWrs
 
 ---
 
