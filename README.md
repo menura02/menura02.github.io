@@ -102,10 +102,10 @@ Labirentler, JavaScript kodundaki `levels` dizisinde tanımlanır ve şu şekild
 
 ---
 
-## 🖼️ Ekran Görüntüleri
+## 🖼️ Ekran Görüntüsü
 
 
----![Seviye4](https://github.com/user-attachments/assets/00fea961-c5e8-4fb4-8f88-50e2a178d4d5)
+![Seviye4](https://github.com/user-attachments/assets/00fea961-c5e8-4fb4-8f88-50e2a178d4d5)
 
 
 ## 📦 Kullanılan Kaynaklar
